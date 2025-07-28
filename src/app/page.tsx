@@ -20,56 +20,71 @@ export default function Home() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Parallax effect for text
+  // Parallax for text and logo
   const parallax = (factor: number) => ({
     transform: `translate3d(${(mouse.x - 0.5) * factor}px, ${(mouse.y - 0.5) * factor}px, 0)`,
   });
 
+  // Logo rotation
+  const logoStyle = {
+    ...parallax(60),
+    transform: `${parallax(60).transform} rotate(${(mouse.x - 0.5) * 10}deg)`,
+    filter: "drop-shadow(0 0 80px #00D4AA88) drop-shadow(0 0 40px #A259FF88)",
+    opacity: 0.18,
+    transition: "transform 0.3s cubic-bezier(.4,2,.6,1), filter 0.3s",
+  };
+
   return (
     <main
       ref={heroRef}
-      className="relative min-h-screen flex flex-col items-center justify-center bg-[#f5e9e2] overflow-hidden"
+      className="relative min-h-screen flex flex-col items-center justify-center bg-[#0A0C12] overflow-hidden"
       style={{
         fontFamily: "'Inter', sans-serif",
       }}
     >
-      {/* Pastel 3D background imitation */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <svg width="100%" height="100%" viewBox="0 0 1440 800" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ position: "absolute", top: 0, left: 0 }}>
-          <ellipse cx="720" cy="700" rx="900" ry="200" fill="#e3d1c6" />
-          <ellipse cx="400" cy="400" rx="200" ry="80" fill="#e3d1c6" />
-          <ellipse cx="1100" cy="500" rx="180" ry="60" fill="#e3d1c6" />
-          <ellipse cx="900" cy="200" rx="120" ry="40" fill="#d1f7f2" />
-        </svg>
-        {/* Grain overlay */}
-        <div style={{
-          position: "absolute", inset: 0, pointerEvents: "none",
-          background: "url('https://grainy-gradients.vercel.app/noise.svg') repeat",
-          opacity: 0.15,
-          mixBlendMode: "multiply"
-        }} />
-      </div>
+      {/* Neon Logo Background */}
+      <motion.img
+        src="/token-logo.svg"
+        alt="SmokeLess Token Logo"
+        className="absolute z-0"
+        style={{
+          ...logoStyle,
+          left: "50%",
+          top: "50%",
+          width: "60vw",
+          minWidth: 400,
+          maxWidth: 700,
+          height: "auto",
+          transform: `${parallax(60).transform} translate(-50%, -50%) rotate(${(mouse.x - 0.5) * 10}deg)`,
+          pointerEvents: "none",
+          userSelect: "none",
+        }}
+        draggable={false}
+      />
+      {/* Grain overlay */}
+      <div style={{
+        position: "absolute", inset: 0, pointerEvents: "none",
+        background: "url('https://grainy-gradients.vercel.app/noise.svg') repeat",
+        opacity: 0.13,
+        mixBlendMode: "screen",
+        zIndex: 1,
+      }} />
       {/* Navigation */}
-      <nav className="absolute top-8 right-12 z-20 flex gap-8 text-lg font-semibold text-[#222] bg-white/60 backdrop-blur rounded-full px-6 py-2 shadow">
+      <nav className="absolute top-8 right-12 z-20 flex gap-8 text-lg font-semibold text-white bg-[#181c2f99] backdrop-blur rounded-full px-6 py-2 shadow border border-[#3FE0FF33]">
         <a href="#" className="hover:text-[#00D4AA]">Index</a>
         <a href="#" className="hover:text-[#00D4AA]">Projects</a>
         <a href="#" className="hover:text-[#00D4AA]">Contact</a>
       </nav>
       {/* Hero Text */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
-        <motion.div
-          className="text-xl mb-4 tracking-widest"
-          style={parallax(10)}
-          transition={{ type: "spring", stiffness: 100 }}
-        >
-          A COMMUNITY & TOKEN FOR HEALTHIER LIVING
-        </motion.div>
         <motion.h1
-          className="text-6xl md:text-8xl font-bold mb-2 hero-serif"
+          className="text-6xl md:text-8xl font-bold mb-2"
           style={{
             ...parallax(30),
             fontFamily: "'Playfair Display', serif",
-            color: "#222",
+            background: "linear-gradient(90deg, #00D4AA 0%, #3FE0FF 50%, #A259FF 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
             letterSpacing: "-0.04em",
             textShadow: "0 4px 32px #00D4AA44, 0 1px 0 #fff"
           }}
@@ -78,11 +93,11 @@ export default function Home() {
           SmokeLess Token
         </motion.h1>
         <motion.div
-          className="text-5xl md:text-7xl font-bold"
+          className="text-4xl md:text-6xl font-bold"
           style={{
             ...parallax(-20),
             fontFamily: "'Playfair Display', serif",
-            color: "#00D4AA",
+            color: "#3FE0FF",
             letterSpacing: "-0.04em",
             textShadow: "0 4px 32px #00D4AA44, 0 1px 0 #fff"
           }}
@@ -91,7 +106,7 @@ export default function Home() {
           Creating the unexpected
         </motion.div>
         <motion.button
-          className="mt-12 px-8 py-4 rounded-full bg-white/80 text-[#00D4AA] font-bold text-xl shadow-lg hover:bg-[#00D4AA] hover:text-white transition"
+          className="mt-12 px-8 py-4 rounded-full bg-[#00D4AA] text-white font-bold text-xl shadow-lg hover:bg-[#A259FF] hover:text-white transition"
           style={parallax(10)}
           whileHover={{ scale: 1.05 }}
         >
@@ -99,7 +114,7 @@ export default function Home() {
         </motion.button>
       </div>
       {/* Footer */}
-      <footer className="absolute bottom-8 left-12 text-[#222] text-sm bg-white/60 px-4 py-2 rounded-full shadow">
+      <footer className="absolute bottom-8 left-12 text-[#3FE0FF] text-sm bg-[#181c2f99] px-4 py-2 rounded-full shadow border border-[#3FE0FF33]">
         ©2025 SmokeLess Token
       </footer>
     </main>
